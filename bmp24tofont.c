@@ -104,7 +104,7 @@ static int bmp24_to_font(const char *bmp24, const char *font, int flag)
         planes   = header.biPlanes;
         bitcnt   = header.biBitCount;
         compress = header.biCompression;
-//      ALOGD("offset = %d, width = %d, height = %d, planes = %d, bitcnt = %d, compress = %d\n", offset, width, height, planes, bitcnt, compress);
+//      printf("offset = %d, width = %d, height = %d, planes = %d, bitcnt = %d, compress = %d\n", offset, width, height, planes, bitcnt, compress);
         if (planes != 1 || compress != 0) {
             goto done;
         }
@@ -117,8 +117,8 @@ static int bmp24_to_font(const char *bmp24, const char *font, int flag)
 
         stride = (width * 3 + 3) / 4 * 4;
         skip   = stride - width * 3;
-        fseek(fpsrc, SEEK_SET, offset + stride * (height - 1));
-        for (n=0,i=0; i<height; i++) {
+        fseek(fpsrc, offset + stride * (abs(height) - 1), SEEK_SET);
+        for (n=0,i=0; i<abs(height); i++) {
             for (j=0; j<width; j++) {
                 r = fgetc(fpsrc);
                 g = fgetc(fpsrc);
@@ -137,7 +137,7 @@ static int bmp24_to_font(const char *bmp24, const char *font, int flag)
             for (j=0; j<skip; j++) {
                 fgetc(fpsrc);
             }
-            fseek(fpsrc, SEEK_CUR, -2 * stride);
+            fseek(fpsrc, -2 * stride, SEEK_CUR);
         }
 
         if (flag) {
