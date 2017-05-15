@@ -1,2 +1,2 @@
-bmp24tofont.exe font16x28.bmp
-bmp24tofont.exe font16x28.bmp -c
+bmp24tofont.exe font25x48.bmp 25 48
+bmp24tofont.exe font25x48.bmp 25 48 -c
